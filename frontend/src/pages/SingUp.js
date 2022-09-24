@@ -7,6 +7,7 @@ import { db, auth, usersCollectionRef } from "../firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { isSameDateError } from "@mui/x-date-pickers/internals/hooks/validation/useDateValidation";
 import { addDoc, collection } from "firebase/firestore";
+import MyPhoneInput from "../components/MyPhoneInput";
 
 const SignUp = ({setPage}) => {
     const list_major = [
@@ -23,6 +24,7 @@ const SignUp = ({setPage}) => {
     const [gender, setGender] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const [phone, setPhone] = useState("")
     const [error, setError] = useState(false);
     const [errorText, setErrorText] = useState("");
 
@@ -41,13 +43,15 @@ const SignUp = ({setPage}) => {
             !major ||
             !gender ||
             !firstName ||
-            !lastName
+            !lastName ||
+            !phone
         ) {
             setError(true);
             setErrorText("*Fill out all the fields");
         } else {
             try {
                 const response = await createUserWithEmailAndPassword(auth, email, password);
+                console.log(phone)
                 addDoc(usersCollectionRef, {
                     firstName: firstName,
                     lastName: lastName,
@@ -55,6 +59,7 @@ const SignUp = ({setPage}) => {
                     dob: DOB,
                     major: major,
                     genderFilter: false,
+                    phone: phone,
                     uuid: response.user.uid
                 });
                 setPage("SignIn");
@@ -93,12 +98,18 @@ const SignUp = ({setPage}) => {
                         placeholder='First Name'
                     />
                 </div>
+                
                 <div className='sign-in-input'>
                     <InputField setVal={setLastName} placeholder='Last Name' />
+                </div>
+
+                <div className='phone-container'>
+                    <MyPhoneInput setVal={setPhone}/>
                 </div>
                 <div className='DOB-container'>
                     <MyDatePicker label='Date of Birth' setVal={setDOB} />
                 </div>
+                
                 <div className='major-container'>
                     <Dropdown
                         list={list_major}
