@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         WebView myWebView = (WebView) findViewById(R.id.webview);
-        myWebView.loadUrl("https://www.google.com");
+        myWebView.loadUrl("https://hackrice12-walkshare.web.app");
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
     }
