@@ -51,7 +51,6 @@ const SignUp = ({setPage}) => {
         } else {
             try {
                 const response = await createUserWithEmailAndPassword(auth, email, password);
-                console.log(phone)
                 addDoc(usersCollectionRef, {
                     firstName: firstName,
                     lastName: lastName,

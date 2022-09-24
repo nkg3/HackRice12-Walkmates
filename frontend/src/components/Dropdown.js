@@ -12,7 +12,6 @@ export default function Dropdown({ setVal ,list, label }) {
                 sx={{ width: 300 }}
                 renderInput={(params) => (
                     <TextField
-                        onChange={(e) => console.log(e.target)}
                         {...params}
                         label={label}
                     />
