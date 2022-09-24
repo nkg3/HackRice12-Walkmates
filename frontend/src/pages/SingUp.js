@@ -61,6 +61,7 @@ const SignUp = ({setPage}) => {
                     phone: phone,
                     uuid: response.user.uid
                 });
+                setPage("SignIn");
             } catch (e) {
                 setError(true);
                 if (e.code === "auth/email-already-in-use") {
