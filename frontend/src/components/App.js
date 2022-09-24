@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SingUp";
+import Main from "../pages/Main";
 
 const App = () => {
-    const [page, setPage] = useState("SignIn");
+    const [page, setPage] = useState("Main");
     if (page === "SignIn") {
         return <SignIn setPage={setPage} />;
     } else if (page === "SignUp") {
         return <SignUp setPage={setPage} />;
     }
     else if(page === "Main"){
-        return <div>signed in</div>
+        return <Main setPage={setPage} />;
     }
 };
 export default App;
