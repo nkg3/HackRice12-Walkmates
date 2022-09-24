@@ -1,0 +1,39 @@
+.sign-in-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px;
+}
+.sign-in-container{
+    margin-left: 10%;
+    margin-right: 10%;
+
+}
+.sign-in-input {
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.sign-in-sign-up{
+    color:rgb(0, 166, 255);
+    padding-left: 5px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.sign-in-sign-up-text{
+    display: flex;
+    font-size: smaller;
+}
+
+.sign-in-button{
+    width:100%;
+}
+.my-button{
+    width: 100%;
+}
