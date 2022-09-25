@@ -1,7 +1,6 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import InputField from "../components/InputField";
 import Clock from "../components/Clock";
-
 
 const Request = ({ logOut, userData, setSearchState }) => {
     const [fromInput, setFromInput] = useState("");
@@ -12,7 +11,7 @@ const Request = ({ logOut, userData, setSearchState }) => {
     const findGroup = () => {
         console.log(earliestTime);
         console.log(latestTime);
-        setSearchState("searching")
+        setSearchState("searching");
     };
 
     return (
@@ -20,9 +19,12 @@ const Request = ({ logOut, userData, setSearchState }) => {
             <div onClick={logOut} className='sign-in-sign-up'>
                 Sign out
             </div>
-            <h1 className='sign-in-header'>
-                Welcome Back {userData.firstName}!
-            </h1>
+            <div>
+                <h1 className='sign-in-header'>
+                    Welcome Back {userData.firstName}!
+                </h1>
+            </div>
+
             <h3 className='main-subheader'>Find your walk group:</h3>
             <div className='sign-in-container'>
                 <div className='sign-in-input'>

@@ -21,7 +21,7 @@ const Main = ({ setPage }) => {
         phone: "",
         uuid: "",
     });
-    
+
     useEffect(() => {
         const getUser = async () => {
             try {
@@ -43,6 +43,9 @@ const Main = ({ setPage }) => {
 
         const data = window.localStorage.getItem("MY_SEARCH_STATE");
         setSearchState(JSON.parse(data));
+
+        const data_user = window.localStorage.getItem("USER_INFO");
+        setUserData(JSON.parse(data_user));
     }, []);
 
     useEffect(() => {
@@ -50,7 +53,8 @@ const Main = ({ setPage }) => {
             "MY_SEARCH_STATE",
             JSON.stringify(searchState)
         );
-    }, [searchState]);
+        window.localStorage.setItem("USER_INFO", JSON.stringify(userData));
+    }, [searchState, userData]);
 
     const logOut = async () => {
         await signOut(auth);
