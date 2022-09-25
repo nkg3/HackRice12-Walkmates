@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { db, auth, usersCollectionRef } from '../firebaseConfig';
-import { onAuthStateChanged } from 'firebase/auth';
-import { query, where, getDocs} from 'firebase/firestore';
+import { db, auth, usersCollectionRef } from "../firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
+import { query, where, getDocs } from "firebase/firestore";
+import { signOut } from "firebase/auth";
+import Searching from "./Searching";
+import "./Main.css";
+import InputField from "../components/InputField";
+import Clock from "../components/Clock";
+import Request from "./Request";
 
 const Main = ({ setPage }) => {
+    const [searchState, setSearchState] = useState("none");
 
+    const logOut = async () => {
+        await signOut(auth);
+    };
 
     const [userData, setUserData] = useState({
         firstName: "",
@@ -14,45 +24,52 @@ const Main = ({ setPage }) => {
         major: "",
         genderFilter: "",
         phone: "",
-        uuid: ""
+        uuid: "",
     });
 
     useEffect(() => {
         const getUser = async () => {
-            console.log("in function")
-            const data = await getDocs(query(usersCollectionRef, where("uuid", "==", auth.currentUser.uid)));
+            const data = await getDocs(
+                query(
+                    usersCollectionRef,
+                    where("uuid", "==", auth.currentUser.uid)
+                )
+            );
             data.forEach((doc) => {
                 setUserData(doc.data());
             });
         };
-    
+
         getUser();
-      }, []);
+    }, []);
 
     onAuthStateChanged(auth, (user) => {
         //console.log(user);
         if (user) {
             // setAuthUser(user);
-            const getData = async () => {
-
-                
-            }
-            const response = getData();
-            console.log(response)
-            console.log(userData)
         } else {
             // setAuthUser(null);
             setPage("SignIn");
         }
     });
-    
 
-    return (
-        <div>
-            <h1>Main Page</h1>
-            <h2>Welcome, {userData.firstName}</h2>
-        </div>
-    )
+    if (searchState === "none") {
+        return (
+            <Request
+                logOut={logOut}
+                userData={userData}
+                setSearchState={setSearchState}
+            />
+        );
+    } else if (searchState === "searching") {
+        return (
+            <Searching
+                setSearchState={setSearchState}
+                userData={userData}
+                logOut={logOut}
+            />
+        );
+    }
 };
 
 export default Main;
