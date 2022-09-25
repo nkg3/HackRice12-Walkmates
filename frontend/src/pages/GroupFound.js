@@ -3,10 +3,19 @@ import { Card } from "@mui/material";
 import React, { useState } from "react";
 
 const GroupFound = ({ logOut, userData, setSearchState }) => {
-    const [started, setStarted] = useState(false);
+    const [started, setStarted] = useState(null);
 
     const startWalk = () => {
         setStarted(!started)
+        if(started){
+            //do stuff during walk
+        }
+        else if(started === false){
+            //after they stop walking
+        }
+        else if(started === null){
+            setStarted(true);
+        }
     }
 
     const cancelWalk = () => {

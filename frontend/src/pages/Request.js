@@ -7,11 +7,35 @@ const Request = ({ logOut, userData, setSearchState }) => {
     const [toInput, setToInput] = useState("");
     const [earliestTime, setEarliestTime] = useState("");
     const [latestTime, setLatestTime] = useState("");
+    const [genderPref, setGenderPref] = useState("");
 
     const findGroup = () => {
+        if (earliestTime.valueOf < Date.now()) {
+            earliestTime.add(1, "day");
+        }
+        if (latestTime.valueOf() <= earliestTime.valueOf()) {
+            latestTime.add(1, "day");
+        }
+
         console.log(earliestTime);
         console.log(latestTime);
-        setSearchState("searching");
+
+        let temp1 = fromInput.replace(/\s+/g, '');
+        setFromInput(temp1);
+
+        temp1  = toInput.replace(/\s+/g, '');
+        setToInput(temp1);
+
+        const to_send = {
+            fromLocation: fromInput,
+            toLocation: toInput,
+            beginTime: earliestTime,
+            endTime: latestTime,
+            genderPref: 
+
+        }
+
+        //setSearchState("searching");
     };
 
     return (
