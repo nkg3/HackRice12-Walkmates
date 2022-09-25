@@ -9,7 +9,7 @@ import Request from "./Request";
 import GroupFound from "./GroupFound";
 
 const Main = ({ setPage }) => {
-    const [searchState, setSearchState] = useState("groupFound");
+    const [searchState, setSearchState] = useState("none");
 
     const logOut = async () => {
         await signOut(auth);

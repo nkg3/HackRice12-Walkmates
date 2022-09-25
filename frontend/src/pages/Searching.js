@@ -1,7 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "@mui/material";
 
 const Searching = ({ userData, logOut, setSearchState }) => {
+    useEffect(() => {
+        const changeState = () => {
+            setSearchState("groupFound");
+        };
+        setTimeout(() => changeState(), 5000);
+    }, []);
+
     const request = {
         minTime: "12:00AM",
         maxTime: "3:00AM",
@@ -13,22 +20,22 @@ const Searching = ({ userData, logOut, setSearchState }) => {
     const cancelRequest = () => {
         /*do stuff*/
         setSearchState("none");
-    }
+    };
     return (
         <div>
             <div onClick={logOut} className='sign-in-sign-up'>
                 Sign out
             </div>
             <br />
-            
+
             <div>
                 <div className='searching-header'>
                     <h1>Welcome Back {userData.firstName}!</h1>
                 </div>
             </div>
-            <br/>
-            <h3 className="searching-header">We are finding you a group</h3>
-            <div class="ui active centered inline loader"></div>
+            <br />
+            <h3 className='searching-header'>We are finding you a group</h3>
+            <div class='ui active centered inline loader'></div>
             <div className='card-container'>
                 <Card>
                     <div className='inner-card-container'>
@@ -52,11 +59,13 @@ const Searching = ({ userData, logOut, setSearchState }) => {
                             <div className='card-div'>
                                 <h5>Gender Preference:</h5> {request.genderPref}
                             </div>
-                            <button onClick = {cancelRequest} className='ui red button cancel-button'>
+                            <button
+                                onClick={cancelRequest}
+                                className='ui red button cancel-button'
+                            >
                                 Cancel
                             </button>
                         </div>
-                        
                     </div>
                 </Card>
             </div>
