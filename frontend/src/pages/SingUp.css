@@ -1,0 +1,26 @@
+.DOB-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.major-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+.Gender-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+.phone-container{
+    padding-top:20px;   
+    padding-bottom:10px;   
+}

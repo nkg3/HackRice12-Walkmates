@@ -1,0 +1,43 @@
+.main-subheader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.clocks-container{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+}
+.clock{
+    padding:10px;
+}
+.main-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.search-request{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card-info{
+    margin-left: 10%;
+    margin-top: 5%;
+}
+.card-container{
+    padding:10%;
+}
+.inner-card-container{
+    padding:10%;
+}
+.card-div{
+    padding:5px;
+}
+.cancel-button{
+    padding-top: 5%;
+}
+.searching-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
