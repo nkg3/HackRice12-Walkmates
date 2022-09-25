@@ -12,47 +12,53 @@ const GroupFound = ({ logOut, userData, setSearchState, gId }) => {
     useEffect(() => {
         const temp = localStorage.getItem("GROUP_ID");
         setGroupId(JSON.parse(temp));
-    }, []);
+    }, [])
+
 
     const getOtherMembers = () => {
         var requests = [];
-        getDocs(
-            query(groupsCollectionRef, where("groupID", "==", groupId))
-        ).then((data) => {
-            data.forEach((doc) => {
-                requests = doc.data().requests;
-            });
-        });
-        var memberUids = requests.map((request) => request.uuid);
-        var members = [];
-        for (const uid in memberUids) {
-            getDocs(query(usersCollectionRef, where("uuid", "==", uid))).then(
-                (data) => {
+        getDocs(query(
+            groupsCollectionRef,
+            where("groupID", "==", groupId)))
+            .then((data) => {
+                data.forEach((doc) => {
+                    requests = doc.data().requests
+                });
+            })
+        var memberUids = requests.map(request => request.uuid);
+        var members = []
+        for(const uid in memberUids) {
+            getDocs(query(
+                usersCollectionRef,
+                where("uuid", "==", uid)))
+                .then((data) => {
                     data.forEach((doc) => {
                         members.push(doc.data());
                     });
-                }
-            );
+                })
         }
         return members;
-    };
+    }
     console.log(getOtherMembers());
     const startWalk = () => {
-        setStarted(!started);
-        if (started) {
+        setStarted(!started)
+        if(started){
             //do stuff during walk
-        } else if (started === false) {
+        }
+        else if(started === false){
             //after they stop walking
-            setSearchState("none");
-        } else if (started === null) {
+            setSearchState("none")
+        }
+        else if(started === null){
             setStarted(true);
         }
-    };
+    }
 
     const cancelWalk = () => {
         //do stuff
         setSearchState("none");
-    };
+
+    }
     const group = [
         {
             firstName: "nik",
@@ -61,7 +67,7 @@ const GroupFound = ({ logOut, userData, setSearchState, gId }) => {
             major: "computer science",
             phone: "2819285901",
             gender: "Male",
-            img: "C:UsersIbrahim SemaryDesktopHackRice12-Walkmates\frontendsrcpagesSingUp.js",
+            img: "https://hospitality.tamu.edu/wp-content/uploads/2021/08/Ibrahim-225x300.jpg",
         },
         {
             firstName: "victor",
@@ -139,23 +145,11 @@ const GroupFound = ({ logOut, userData, setSearchState, gId }) => {
                 <h3 className='searching-header'>Here is your group:</h3>
                 {displayGroup()}
             </div>
-            <div className='group-found-buttons'>
-                <button
-                    onClick={startWalk}
-                    className={`ui ${
-                        started ? "black" : "blue"
-                    } button group-button`}
-                >
-                    {started ? "End walk" : "Start Walk"}
-                </button>
-                <button
-                    onClick={cancelWalk}
-                    className='ui red button group-button'
-                >
-                    Cancel Walk
-                </button>
+            <div className="group-found-buttons">
+                <button onClick = {startWalk} className={`ui ${started ? "black" : "blue"} button group-button`}>{started ? "End walk" : "Start Walk"}</button>
+                <button onClick={cancelWalk}   className= 'ui red button group-button' >Cancel Walk</button>
             </div>
-            <br />
+            <br/>
         </div>
     );
 };
