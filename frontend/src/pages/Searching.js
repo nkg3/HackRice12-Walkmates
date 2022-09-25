@@ -56,6 +56,7 @@ const Searching = ({ userData, logOut, setSearchState }) => {
                                 Cancel
                             </button>
                         </div>
+                        
                     </div>
                 </Card>
             </div>

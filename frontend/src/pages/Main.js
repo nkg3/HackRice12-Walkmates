@@ -5,12 +5,11 @@ import { query, where, getDocs } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import Searching from "./Searching";
 import "./Main.css";
-import InputField from "../components/InputField";
-import Clock from "../components/Clock";
 import Request from "./Request";
+import GroupFound from "./GroupFound";
 
 const Main = ({ setPage }) => {
-    const [searchState, setSearchState] = useState("none");
+    const [searchState, setSearchState] = useState("groupFound");
 
     const logOut = async () => {
         await signOut(auth);
@@ -69,6 +68,8 @@ const Main = ({ setPage }) => {
                 logOut={logOut}
             />
         );
+    } else if (searchState === "groupFound") {
+        return <GroupFound userData={userData} logOut={logOut} setSearchState = {setSearchState}/>;
     }
 };
 

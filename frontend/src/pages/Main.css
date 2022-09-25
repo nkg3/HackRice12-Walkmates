@@ -29,6 +29,8 @@
 }
 .inner-card-container{
     padding:10%;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
 }
 .card-div{
     padding:5px;
@@ -40,4 +42,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.card-container-results{
+    margin:5%;
+}
+.image{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.group-found-buttons{
+    margin: 5%;
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
 }
