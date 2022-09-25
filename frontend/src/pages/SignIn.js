@@ -5,12 +5,6 @@ import { db, auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { isSameDateError } from "@mui/x-date-pickers/internals/hooks/validation/useDateValidation";
 
-function sleep(ms) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
-}
-
 const SignIn = ({ setPage }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
