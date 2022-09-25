@@ -3,6 +3,8 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const serviceAccount = require("./hackrice12-walkshare-firebase-adminsdk-3aioe-8b2d7252e5.json");
 
+const axios = require('axios');
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
@@ -72,16 +74,42 @@ exports.validateLocation = functions.firestore
 
 
 exports.findGroup = functions.https.onCall(async (data, context) => {
+    const genderPref = data.genderPref;
+    const startTime = data.startTime;
+    const endTime = data.endTime;
+    const startAddress = data.startAddress;
+    const endAddress = data.endAddress;
+    const startPos = [startAddress.lat, startAddress.lng];
+    const endPos = [endAddress.lat, endAddress.lng];
+    const uid = context.auth.uid;
+    const request = {
+        rid: uid,
+        uuid: uid,
+        endLoc: endPos,
+        startLoc: startPos,
+        startTime: startTime,
+        endTime: endTime
+    }
     const groups = {};
     const groupsArray = await getGroups();
     groupsArray.forEach(group => {
         groups[group.number] = group;
-    })
-    await addToGroups(data.request, groups);
+    });
+    await addToGroups(request, groups);
     await writeGroups(groups);
 });
 
 
+const addressToLatLng = async (address) => {
+    var lat, long;
+    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyA70weFATn6HUm89K367eSqsFJi5S1Icjo`)
+        .then(res => {
+            console.log(res);
+            lat = res.data.results[0].geometry.location.lat;
+            long = res.data.results[0].geometry.location.lng;
+        });
+    return [lat, long];
+}
 
 const writeGroups = async(groups) => {
     var batch = admin.firestore().batch();
@@ -171,7 +199,7 @@ function makeNewGroup(request, groups, users){
         male: users[getUser(request.uuid, users)].male,
         female: users[getUser(request.uuid, users)].female
     }
-    return toAdd
+    return [toAdd, gpid]
 
 }
 function groupMod(request, groupNum, groups, users){
@@ -186,9 +214,9 @@ function groupMod(request, groupNum, groups, users){
             } else{
                 groups[group].female = true
             }
-            break
+            return groups[group].groupID
         }
-    }
+    } 
 }
 async function addToGroups(request, groups){
     const users = {};
@@ -207,10 +235,13 @@ async function addToGroups(request, groups){
             }
             gpName = "group" + (Math.max.apply(null, nonoGroups) + 1).toString()
         }
-        groups[gpName] = makeNewGroup(request, groups, users)
+        gptup = makeNewGroup(request, groups, users)
+        groups[gpName] = gptup[0]
+        gpAddedTo = gptup[1]
     }else{
-        groupMod(request, bestGroupForYou, groups, users)
+        gpAddedTo = groupMod(request, bestGroupForYou, groups, users)
     }
+    return gpAddedTo
 }
 
 const testing = async () => {

@@ -12,7 +12,6 @@ const App = () => {
         if (user) {
             setPage("Main");
         } else {
-            setPage("SignIn");
         }
     });
 
