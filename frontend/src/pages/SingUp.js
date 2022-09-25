@@ -25,6 +25,7 @@ const SignUp = ({setPage}) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phone, setPhone] = useState("")
+    const [emergencyPhone, setEmergencyPhone] = useState("");
     const [error, setError] = useState(false);
     const [errorText, setErrorText] = useState("");
 
@@ -51,6 +52,14 @@ const SignUp = ({setPage}) => {
         } else {
             try {
                 const response = await createUserWithEmailAndPassword(auth, email, password);
+                let male, female;
+                if(gender === 'Male') {
+                    male = true;
+                    female = false;
+                }else{
+                    male = false;
+                    female = true;
+                }
                 addDoc(usersCollectionRef, {
                     firstName: firstName,
                     lastName: lastName,
@@ -58,7 +67,13 @@ const SignUp = ({setPage}) => {
                     dob: DOB,
                     major: major,
                     genderFilter: false,
+                    male: male,
+                    female: female,
                     phone: phone,
+                    emergencyPhone: emergencyPhone,
+                    onWalk: false,
+                    location: null,
+                    groupId: null,
                     uuid: response.user.uid
                 });
                 setPage("SignIn");
@@ -89,7 +104,7 @@ const SignUp = ({setPage}) => {
                     <InputField setVal={setEmail} placeholder='Email' />
                 </div>
                 <div className='sign-in-input'>
-                    <InputField setVal={setPassword} placeholder='Password' />
+                    <InputField setVal={setPassword} placeholder='Password' type='password' />
                 </div>
                 <div className='sign-in-input'>
                     <InputField
@@ -103,7 +118,10 @@ const SignUp = ({setPage}) => {
                 </div>
 
                 <div className='phone-container'>
-                    <MyPhoneInput setVal={setPhone}/>
+                    <MyPhoneInput setVal={setPhone} placeholder='Phone'/>
+                </div>
+                <div className='emergency-phone-container'>
+                    <MyPhoneInput setVal={setEmergencyPhone} placeholder='Emergency Contact Phone'/>
                 </div>
                 <div className='DOB-container'>
                     <MyDatePicker label='Date of Birth' setVal={setDOB} />
