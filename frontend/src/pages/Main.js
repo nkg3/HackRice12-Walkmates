@@ -5,16 +5,11 @@ import { query, where, getDocs } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import Searching from "./Searching";
 import "./Main.css";
-import InputField from "../components/InputField";
-import Clock from "../components/Clock";
 import Request from "./Request";
+import GroupFound from "./GroupFound";
 
 const Main = ({ setPage }) => {
     const [searchState, setSearchState] = useState("none");
-
-    const logOut = async () => {
-        await signOut(auth);
-    };
 
     const [userData, setUserData] = useState({
         firstName: "",
@@ -29,19 +24,41 @@ const Main = ({ setPage }) => {
 
     useEffect(() => {
         const getUser = async () => {
-            const data = await getDocs(
-                query(
-                    usersCollectionRef,
-                    where("uuid", "==", auth.currentUser.uid)
-                )
-            );
-            data.forEach((doc) => {
-                setUserData(doc.data());
-            });
+            try {
+                const data = await getDocs(
+                    query(
+                        usersCollectionRef,
+                        where("uuid", "==", auth.currentUser.uid)
+                    )
+                );
+                data.forEach((doc) => {
+                    setUserData(doc.data());
+                });
+            } catch (e) {
+                console.log(e);
+            }
         };
 
         getUser();
+
+        const data = window.localStorage.getItem("MY_SEARCH_STATE");
+        setSearchState(JSON.parse(data));
+
+        const data_user = window.localStorage.getItem("USER_INFO");
+        setUserData(JSON.parse(data_user));
     }, []);
+
+    useEffect(() => {
+        window.localStorage.setItem(
+            "MY_SEARCH_STATE",
+            JSON.stringify(searchState)
+        );
+        window.localStorage.setItem("USER_INFO", JSON.stringify(userData));
+    }, [searchState, userData]);
+
+    const logOut = async () => {
+        await signOut(auth);
+    };
 
     onAuthStateChanged(auth, (user) => {
         //console.log(user);
@@ -67,6 +84,14 @@ const Main = ({ setPage }) => {
                 setSearchState={setSearchState}
                 userData={userData}
                 logOut={logOut}
+            />
+        );
+    } else if (searchState === "groupFound") {
+        return (
+            <GroupFound
+                userData={userData}
+                logOut={logOut}
+                setSearchState={setSearchState}
             />
         );
     }
