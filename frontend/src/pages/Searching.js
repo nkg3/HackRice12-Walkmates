@@ -3,6 +3,11 @@ import { Card } from "@mui/material";
 
 const Searching = ({ userData, logOut, setSearchState }) => {
     useEffect(() => {
+        let temp = window.localStorage.getItem("START_LOCATION", JSON.stringify(fromInput));
+        window.localStorage.setItem("END_LOCATION", JSON.stringify(fromInput));
+        window.localStorage.setItem("START_TIME", JSON.stringify(earliestTime.$d));
+        window.localStorage.setItem("START_TIME", JSON.stringify(latestTime.$d));
+        window.localStorage.setItem("GENDER_PREF"), JSON.stringify(genderPref);
         const changeState = () => {
             setSearchState("groupFound");
         };
@@ -18,7 +23,6 @@ const Searching = ({ userData, logOut, setSearchState }) => {
     };
 
     const cancelRequest = () => {
-        /*do stuff*/
         setSearchState("none");
     };
     return (

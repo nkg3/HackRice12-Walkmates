@@ -24,6 +24,7 @@ const Main = ({ setPage }) => {
         uuid: "",
     });
 
+
     useEffect(() => {
         const data = window.localStorage.getItem("MY_SEARCH_STATE");
         if(data)
@@ -48,21 +49,18 @@ const Main = ({ setPage }) => {
     };
 
     onAuthStateChanged(auth, (user) => {
-        //console.log(user);
         if (user) {
-            setUid(user.uid);
-            const getUsers = async () => {
-                getDocs(query(
-                    usersCollectionRef,
-                    where("uuid", "==", uid)
-                )).then((data) => {
-                    data.forEach((doc) => {
-                        setUserData(doc.data());
+                const getUsers = async () => {
+                    getDocs(query(
+                        usersCollectionRef,
+                        where("uuid", "==", uid)
+                    )).then((data) => {
+                        data.forEach((doc) => {
+                            setUserData(doc.data());
+                        });
                     });
-                });
-            }
-            
-            getUsers();
+                }
+                getUsers();
         } else {
             setUid("");
             setPage("SignIn");

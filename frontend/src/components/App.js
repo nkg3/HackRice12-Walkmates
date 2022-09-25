@@ -2,18 +2,9 @@ import React, { useState } from "react";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SingUp";
 import Main from "../pages/Main";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from '../firebaseConfig';
 
 const App = () => {
-    const [page, setPage] = useState("Main");
-
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            setPage("Main");
-        } else {
-        }
-    });
+    const [page, setPage] = useState("signIn");
 
     if (page === "SignIn") {
         return <SignIn setPage={setPage} />;

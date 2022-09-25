@@ -14,6 +14,9 @@ const SignUp = ({setPage}) => {
         "Computer Science",
         "Electrical Engineering",
         "Psychology",
+        "Math",
+        "Mechanical Engineer",
+        "Communications"
     ];
     const list_gender = ["Male", "Female"];
 
@@ -140,6 +143,13 @@ const SignUp = ({setPage}) => {
                         label='Gender'
                         setVal={setGender}
                     />
+                </div>
+
+                <div>
+                    <label>Import a picture: </label>
+                    <div>
+                        <input type="file" />
+                    </div>
                 </div>
                 <div className='sign-in-sign-up-text'>
                     <p>Already have an account?</p>

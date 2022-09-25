@@ -12,7 +12,6 @@
     ]
   },
   "hosting": {
-    "site": "walkshare-dev",
     "public": "build",
     "ignore": [
       "firebase.json",
