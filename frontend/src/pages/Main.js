@@ -11,10 +11,6 @@ import GroupFound from "./GroupFound";
 const Main = ({ setPage }) => {
     const [searchState, setSearchState] = useState("none");
 
-    const logOut = async () => {
-        await signOut(auth);
-    };
-
     const [userData, setUserData] = useState({
         firstName: "",
         lastName: "",
@@ -25,22 +21,40 @@ const Main = ({ setPage }) => {
         phone: "",
         uuid: "",
     });
-
+    
     useEffect(() => {
         const getUser = async () => {
-            const data = await getDocs(
-                query(
-                    usersCollectionRef,
-                    where("uuid", "==", auth.currentUser.uid)
-                )
-            );
-            data.forEach((doc) => {
-                setUserData(doc.data());
-            });
+            try {
+                const data = await getDocs(
+                    query(
+                        usersCollectionRef,
+                        where("uuid", "==", auth.currentUser.uid)
+                    )
+                );
+                data.forEach((doc) => {
+                    setUserData(doc.data());
+                });
+            } catch (e) {
+                console.log(e);
+            }
         };
 
         getUser();
+
+        const data = window.localStorage.getItem("MY_SEARCH_STATE");
+        setSearchState(JSON.parse(data));
     }, []);
+
+    useEffect(() => {
+        window.localStorage.setItem(
+            "MY_SEARCH_STATE",
+            JSON.stringify(searchState)
+        );
+    }, [searchState]);
+
+    const logOut = async () => {
+        await signOut(auth);
+    };
 
     onAuthStateChanged(auth, (user) => {
         //console.log(user);
@@ -69,7 +83,13 @@ const Main = ({ setPage }) => {
             />
         );
     } else if (searchState === "groupFound") {
-        return <GroupFound userData={userData} logOut={logOut} setSearchState = {setSearchState}/>;
+        return (
+            <GroupFound
+                userData={userData}
+                logOut={logOut}
+                setSearchState={setSearchState}
+            />
+        );
     }
 };
 
