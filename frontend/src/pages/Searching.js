@@ -4,7 +4,7 @@ import { getDocs, query } from "firebase/firestore";
 import { groupsCollectionRef } from "../firebaseConfig";
 import { where } from "firebase/firestore";
 
-const Searching = ({ userData, logOut, setSearchState }) => {
+const Searching = ({ userData, logOut, setSearchState, gId }) => {
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
     const [startLoc, setStartLoc] = useState(null);
@@ -12,10 +12,13 @@ const Searching = ({ userData, logOut, setSearchState }) => {
     const [gen, setGen] = useState(null);
 
     const [alone, setAlone] = useState(true);
-    const [groupId,setGroupId] = useState(null);
+    const [groupId, setGroupId] = useState(null);
 
     useEffect(() => {
-        let data = localStorage.getItem("START_TIME");
+        let data = localStorage.getItem("GROUP_ID");
+        setGroupId(JSON.parse(data));
+
+        data = localStorage.getItem("START_TIME");
         setStartTime(JSON.parse(data));
 
         data = localStorage.getItem("END_TIME");
@@ -30,33 +33,28 @@ const Searching = ({ userData, logOut, setSearchState }) => {
         data = localStorage.getItem("GENDER_PREF");
         setGen(JSON.parse(data));
 
-        data = localStorage.getItem("GROUP_ID");
-        setGroupId(JSON.parse(data))
         // const changeState = () => {
         //     setSearchState("groupFound");
         // };
         // setTimeout(() => changeState(), 200000);
-    }, []);
+    }, [gId]);
 
-    useEffect(()=> {
+    useEffect(() => {
         setTimeout(() => {
-            console.log(groupId)
-            getDocs(query(
-                groupsCollectionRef,
-                where("groupID", "==", groupId)
-            )).then((data) => {
+            console.log(gId);
+            getDocs(
+                query(groupsCollectionRef, where("groupID", "==", gId))
+            ).then((data) => {
                 data.forEach((doc) => {
-                    if(doc.data.number > 1){
-                        console.log("more than one in a group")
+                    if (doc.data().number > 1) {
+                        setSearchState("groupFound");
+                    } else {
+                        setAlone(!alone);
                     }
-                    else{
-                        console.log("in group by yourself")
-                    }
-                })
-            })
-        }, 10000)
-    }, [alone])
-
+                });
+            });
+        }, 10000);
+    }, [alone]);
 
     const cancelRequest = () => {
         setSearchState("none");
@@ -94,8 +92,7 @@ const Searching = ({ userData, logOut, setSearchState }) => {
                                 {startTime}
                             </div>
                             <div className='card-div'>
-                                <h5>Latest Time: </h5>{" "}
-                                {endTime}
+                                <h5>Latest Time: </h5> {endTime}
                             </div>
                             <div className='card-div'>
                                 <h5>Gender Preference:</h5>{" "}

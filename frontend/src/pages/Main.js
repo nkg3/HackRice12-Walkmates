@@ -13,6 +13,8 @@ const Main = ({ setPage }) => {
 
     const [uid, setUid] = useState("");
 
+    const [gId, setGId] = useState(null);
+
     const [userData, setUserData] = useState({
         firstName: "",
         lastName: "",
@@ -74,6 +76,7 @@ const Main = ({ setPage }) => {
                 logOut={logOut}
                 userData={userData}
                 setSearchState={setSearchState}
+                setGId = {setGId}
             />
         );
     } else if (searchState === "searching") {
@@ -82,6 +85,7 @@ const Main = ({ setPage }) => {
                 setSearchState={setSearchState}
                 userData={userData}
                 logOut={logOut}
+                gId = {gId}
             />
         );
     } else if (searchState === "groupFound") {
@@ -90,6 +94,7 @@ const Main = ({ setPage }) => {
                 userData={userData}
                 logOut={logOut}
                 setSearchState={setSearchState}
+                gId = {gId}
             />
         );
     }

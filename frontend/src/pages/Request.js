@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import InputField from "../components/InputField";
 import Clock from "../components/Clock";
-import { Checkbox } from "@mui/material";
+import { Checkbox, StyledEngineProvider } from "@mui/material";
 import { getFunctions, httpsCallable } from "firebase/functions";
 
-const Request = ({ logOut, userData, setSearchState }) => {
+const Request = ({ logOut, userData, setSearchState, setGId }) => {
     const label = { inputProps: { "aria-label": "Checkbox demo" } };
     const [fromInput, setFromInput] = useState("");
     const [toInput, setToInput] = useState("");
@@ -57,6 +57,8 @@ const Request = ({ logOut, userData, setSearchState }) => {
         const functions = getFunctions();
         const searchGroup = httpsCallable(functions, "findGroup");
         const groupId = await searchGroup(to_send);
+        setGId(groupId.data);
+        
         
         window.localStorage.setItem("GROUP_ID", JSON.stringify(groupId.data));
         setSearchState("searching");
