@@ -14,19 +14,21 @@ export default function Clock({ label, setVal }) {
                 value={value}
                 onChange={(newValue) => {
                     setValue(newValue);
-                    let hours = "";
-                    if (newValue.$d.getHours().toString().length === 1) {
-                        hours = "0" + newValue.$d.getHours();
-                    } else {
-                        hours = newValue.$d.getHours();
-                    }
-                    let minutes = "";
-                    if (newValue.$d.getMinutes().toString().length === 1) {
-                        minutes = "0" + newValue.$d.getMinutes();
-                    } else {
-                        minutes = newValue.$d.getMinutes();
-                    }
-                    setVal(hours + ":" + minutes);
+                    setVal(newValue);
+
+                    // let hours = "";
+                    // if (newValue.$d.getHours().toString().length === 1) {
+                    //     hours = "0" + newValue.$d.getHours();
+                    // } else {
+                    //     hours = newValue.$d.getHours();
+                    // }
+                    // let minutes = "";
+                    // if (newValue.$d.getMinutes().toString().length === 1) {
+                    //     minutes = "0" + newValue.$d.getMinutes();
+                    // } else {
+                    //     minutes = newValue.$d.getMinutes();
+                    // }
+                    // setVal(hours + ":" + minutes);
                 }}
                 renderInput={(params) => <TextField {...params} />}
             />
