@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { db, auth, usersCollectionRef } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { query, where, getDocs } from "firebase/firestore";
@@ -10,6 +10,8 @@ import GroupFound from "./GroupFound";
 
 const Main = ({ setPage }) => {
     const [searchState, setSearchState] = useState("none");
+
+    const [uid, setUid] = useState("");
 
     const [userData, setUserData] = useState({
         firstName: "",
@@ -23,29 +25,14 @@ const Main = ({ setPage }) => {
     });
 
     useEffect(() => {
-        const getUser = async () => {
-            try {
-                const data = await getDocs(
-                    query(
-                        usersCollectionRef,
-                        where("uuid", "==", auth.currentUser.uid)
-                    )
-                );
-                data.forEach((doc) => {
-                    setUserData(doc.data());
-                });
-            } catch (e) {
-                console.log(e);
-            }
-        };
-
-        getUser();
-
         const data = window.localStorage.getItem("MY_SEARCH_STATE");
-        setSearchState(JSON.parse(data));
+        if(data)
+            setSearchState(JSON.parse(data));
 
         const data_user = window.localStorage.getItem("USER_INFO");
-        setUserData(JSON.parse(data_user));
+        if(data_user)
+            setUserData(JSON.parse(data_user));
+
     }, []);
 
     useEffect(() => {
@@ -63,12 +50,25 @@ const Main = ({ setPage }) => {
     onAuthStateChanged(auth, (user) => {
         //console.log(user);
         if (user) {
-            // setAuthUser(user);
+            setUid(user.uid);
+            const getUsers = async () => {
+                getDocs(query(
+                    usersCollectionRef,
+                    where("uuid", "==", uid)
+                )).then((data) => {
+                    data.forEach((doc) => {
+                        setUserData(doc.data());
+                    });
+                });
+            }
+            
+            getUsers();
         } else {
-            // setAuthUser(null);
+            setUid("");
             setPage("SignIn");
         }
     });
+
 
     if (searchState === "none") {
         return (
